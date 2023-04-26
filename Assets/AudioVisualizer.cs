@@ -9,6 +9,10 @@ public class AudioVisualizer : MonoBehaviour
     public float size = 5;
 
     public float power = 2;
+
+    private float finalSize;
+
+    public float shrinkSpeed = 3;
     private void Start()
     {
         source = GetComponent<AudioSource>();
@@ -29,9 +33,19 @@ public class AudioVisualizer : MonoBehaviour
         float average = sum / 735;
         print(average);
 
+        var musicPower = (1 + Mathf.Pow(average, power) * size);
+        
+        if(musicPower > finalSize)
+        {
+            finalSize = musicPower;
+        }
+        else
+        {
+            finalSize -= shrinkSpeed * Time.deltaTime; 
+        }
 
-        transform.localScale = Vector3.one * (1 + Mathf.Pow(average, power) * size);
+        transform.localScale = Vector3.one * finalSize;
 
-        transform.Rotate(0, average, 0);
+        transform.Rotate(average, average, average);
     }
 }
